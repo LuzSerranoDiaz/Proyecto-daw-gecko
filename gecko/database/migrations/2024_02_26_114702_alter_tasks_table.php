@@ -18,6 +18,8 @@ return new class extends Migration
         //     $table->foreign('user_id')->references('id')->on('user');
         // });
         // Por ahora no hago la clave foranea para que no de problemas por si tengo que borrarlo
+        // Hay que añadir las relaciones en los modelos task y user tambien, user minuscula el mayusculas venia por defecto
+    
     }
 
     /**

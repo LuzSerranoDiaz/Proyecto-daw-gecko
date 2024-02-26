@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('comment', function (Blueprint $table){
-            $table->unsignedBigInteger('task_id');
-            $table->foreign('task_id')->references('id')->on('task');
+        Schema::dropIfExists('comments');
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('title')->nullable();
+            $table->string('desc')->nullable();
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('comments');
     }
 };

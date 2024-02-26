@@ -15,9 +15,10 @@ class comments extends Seeder
      */
     public function run()
     {
-        DB::table('comment')->insert([
+        DB::table('comments')->insert([
             'title' => 'Bombardear olula',
             'desc' => 'descripcion',
+            'task_id' => 1,
         ]);
     }
 }
