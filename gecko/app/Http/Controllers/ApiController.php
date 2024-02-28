@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 use App\Models\tasks;
 use App\Models\comments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
     // FUNCIONES TASK
-    public function show_tasks(){
-        $tasks = tasks::all();
-        return response()->json($tasks);
+    // public function show_tasks(){
+    //     $tasks = tasks::all();
+    //     return response()->json($tasks);
+    // }
+    public function create() {
+        $data['tasks'] = tasks::all();
+        return view('front/main', $data);
     }
-    public function select_one_task($id){
-        $task = tasks::find($id);
-        return $task;
-    }
+    // public function select_one_task($id){
+    //     $task = tasks::find($id);
+    //     return ;
+    // }
     public function store_task(Request $request){
         try {
             $request->validate([
@@ -33,9 +38,10 @@ class ApiController extends Controller
             $task->solved = $request->input('solved');
             $task->position = $request->input('position');
             $task->save();
-            return response()->json(['msj' => 'tarea guardada'], 200);
+            $request->session()->flash('alert-success', 'Task was successful added!');
+            return $this->create();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'CAGASTE'], 500);
+            return response()->json(['error' => $e->getMessage() ], 500);
         }
     }
     public function delete_task($id){
@@ -48,14 +54,14 @@ class ApiController extends Controller
         return response()->json(['msj' => 'Tarea eliminada'], 200);
     }
     //FUNCIONES COMMENTS
-    public function show_comments(){
-        $comments = comments::all();
-        return response()->json($comments);
+    public function show_comments($id){
+        $data['comments'] = DB::table('comments')->where('task_id', $id)->get();
+        return $data;
     }
-    public function select_one_comment($id){
-        $comment = comments::find($id);
-        return $comment;
-    }
+    // public function select_one_comment($id){
+    //     $comment = comments::find($id);
+    //     return $comment;
+    // }
     public function store_comment(Request $request){
         try {
             $request->validate([

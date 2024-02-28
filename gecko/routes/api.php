@@ -19,13 +19,17 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-//rutas task
-Route::get('/tasks', [ApiController::class, 'show_tasks']);
-Route::get('/tasks/{id}', [ApiController::class, 'select_one_task']);
-Route::post('/store_task', [ApiController::class, 'store_task']);
-Route::delete('/delete_task/{id}', [ApiController::class, 'delete_task']);
-//rutas comment
-Route::get('/comments', [ApiController::class, 'show_comments']);
-Route::get('/comments/{id}', [ApiController::class, 'select_one_comment']);
-Route::post('/store_comment', [ApiController::class, 'store_comment']);
-Route::delete('/delete_comment/{id}', [ApiController::class, 'delete_comment']);
+
+
+Route::group(['middleware' => ['web']], function () {
+    //rutas task
+    Route::get('/tasks', [ApiController::class, 'show_tasks']);
+    // Route::get('/tasks/{id}', [ApiController::class, 'select_one_task']);
+    Route::post('/store_task', [ApiController::class, 'store_task']);
+    Route::delete('/delete_task/{id}', [ApiController::class, 'delete_task']);
+    //rutas comment
+    Route::get('/comments/{id}', [ApiController::class, 'show_comments']);
+    // Route::get('/comments/{id}', [ApiController::class, 'select_one_comment']);
+    Route::post('/store_comment', [ApiController::class, 'store_comment']);
+    Route::delete('/delete_comment/{id}', [ApiController::class, 'delete_comment']);
+});
