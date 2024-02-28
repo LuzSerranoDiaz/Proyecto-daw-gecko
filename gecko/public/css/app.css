@@ -10,6 +10,18 @@ body{
         font-weight: bold;
         text-align: center;
       }
+      .delete-task{
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        float: right;
+        font-size: larger;
+        padding-right: 5px;
+      }
       border: 1px solid gray;
       border-radius: 8px;
       padding: 6px;
@@ -18,7 +30,29 @@ body{
         display: flex;
         justify-content: center;
         margin: 20px 0 0 0;
-        .show-task-details {
+        button {
+          appearance: none;
+          background-color: #000000;
+          transition: box-shadow .15s,transform .15s;;
+          color: #fff;
+          border-radius: 8px;
+          padding: 5px;
+          text-align: center;
+          margin: 0 5px 0 5px;
+        }
+
+
+        button:hover {
+          box-shadow: rgba(255, 255, 255, 0.4) 0 4px 8px, rgba(255, 255, 255, 0.3) 0 7px 13px -3px, #000000 0 -3px 0 inset;
+          transform: translateY(-2px);
+        }
+
+        button:active {
+          box-shadow: none;
+          transform: translateY(0);
+        }
+        /* no lo borro por si te parece cutre */
+        /* .show-task-details {
           appearance: none;
           background-color: #000000;
           transition: box-shadow .15s,transform .15s;;
@@ -37,6 +71,41 @@ body{
         .show-task-details:active {
           box-shadow: none;
           transform: translateY(0);
+        } */
+        
+      }
+    }
+
+    .modal-body{
+      .commentBody{
+        border: 1px solid grey;
+        border-radius:10px;
+        background-color: grey;
+        margin-bottom: 20px;
+        
+        .commentTitle{
+          font-weight: bold;
+          font-size: large;
+          border-bottom: 1px solid grey;
+          background-color: white;
+          border-top-left-radius:10px;
+          border-top-right-radius:10px;
+          padding-left: 10px;
+        }
+        .deleteComment{
+          background: none;
+          color: inherit;
+          border: none;
+          padding: 0;
+          font: inherit;
+          cursor: pointer;
+          outline: inherit;
+          float: right;
+          padding-right: 5px;
+        }
+        .commentDesc{
+          text-align: justify;
+          padding: 5px 0 5px 20px;
         }
       }
     }

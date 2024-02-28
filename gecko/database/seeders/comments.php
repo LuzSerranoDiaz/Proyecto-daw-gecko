@@ -18,7 +18,17 @@ class comments extends Seeder
         DB::table('comments')->insert([
             'title' => 'Bombardear olula',
             'desc' => 'descripcion',
-            'task_id' => 1,
+            'tasks_id' => 45,
+        ]);
+        DB::table('comments')->insert([
+            'title' => 'Bombardear olula',
+            'desc' => 'descripcion',
+            'tasks_id' => 45,
+        ]);
+        DB::table('comments')->insert([
+            'title' => 'Bombardear olula',
+            'desc' => 'descripcion',
+            'tasks_id' => 45,
         ]);
     }
 }

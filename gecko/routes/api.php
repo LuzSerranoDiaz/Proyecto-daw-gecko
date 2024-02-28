@@ -23,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['web']], function () {
     //rutas task
-    Route::get('/tasks', [ApiController::class, 'show_tasks']);
+    // Route::get('/tasks', [ApiController::class, 'show_tasks']);
     // Route::get('/tasks/{id}', [ApiController::class, 'select_one_task']);
     Route::post('/store_task', [ApiController::class, 'store_task']);
+    Route::put('/update_task/{id}', [ApiController::class, 'edit_task']);
     Route::delete('/delete_task/{id}', [ApiController::class, 'delete_task']);
     //rutas comment
     Route::get('/comments/{id}', [ApiController::class, 'show_comments']);
