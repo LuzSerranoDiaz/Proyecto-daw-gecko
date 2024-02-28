@@ -29,5 +29,19 @@ class task extends Seeder
             'solved' => false,
             'position' => 1,
         ]);
+        DB::table('tasks')->insert([
+            'title' => 'EjemploBorrar',
+            'desc' => 'descripcion',
+            'color' => 1,
+            'solved' => true,
+            'position' => 1,
+        ]);
+        DB::table('tasks')->insert([
+            'title' => 'EjemploBorrar2',
+            'desc' => 'otra vez',
+            'color' => 1,
+            'solved' => false,
+            'position' => 1,
+        ]);
     }
 }

@@ -1,6 +1,6 @@
 $('#submitTask').on('click', function(e){
     let form = $(e.target).parent();
-    let modal = $( "#exampleModal" );
+    let modal = $( "#taskModal" );
     e.preventDefault();
     e.stopPropagation();
     $.ajax({
@@ -20,21 +20,31 @@ $('#submitTask').on('click', function(e){
         success: function(){
             $.loading().close();
             modal.modal('toggle');
-            $('.main-content').append('<div class="element"><h3 class="task-title">'+form.find('#title').val()+'</h3><span class="task-comment">'+form.find('#title').val()+'</span><div class="tasks-btns"><button class="show-task-details">Show details</button></div></div>');
+            $('.main-content').append('<div class="element"><h3 class="task-title">'+form.find('#title').val()+'</h3><span class="task-comment">'+form.find('#title').val()+'</span><div class="tasks-btns"><button class="show-task-details" id="task-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#commentsModal">Mostrar detalles</button><button class="delete-task" id="task-{{ $task->id }}">Eliminar</button></div></div>');
         },
     })
 })
 $('.show-task-details').on('click', function(e){
     let modal = $( "#commentsModal" );
-    // let taskId = $(this).attr('id').split('-')[1];
     $.ajax({
         url:'api/comments/' + $(this).attr('id').split('-')[1],
         type:'GET',
-        // data:{
-
-        // },
         success: function(){
             modal.modal('open');
         }
+    });
+});
+$('.delete-task').on('click', function(e){
+    $id=$(this).attr('id').split('-')[1];
+    $.ajax({
+        url:'api/delete_task/' + $(this).attr('id').split('-')[1],
+        type:'DELETE',
+        beforeSend: function(){
+            $.loading().open();
+        },
+        success: function(){
+            $.loading().close();
+            $("#Task-"+$id).remove();
+        },
     });
 });

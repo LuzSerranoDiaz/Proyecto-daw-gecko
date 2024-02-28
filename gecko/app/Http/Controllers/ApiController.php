@@ -9,18 +9,10 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
     // FUNCIONES TASK
-    // public function show_tasks(){
-    //     $tasks = tasks::all();
-    //     return response()->json($tasks);
-    // }
     public function create() {
         $data['tasks'] = tasks::all();
         return view('front/main', $data);
     }
-    // public function select_one_task($id){
-    //     $task = tasks::find($id);
-    //     return ;
-    // }
     public function store_task(Request $request){
         try {
             $request->validate([
@@ -47,11 +39,11 @@ class ApiController extends Controller
     public function delete_task($id){
         $task = tasks::find($id);
         if (!$task) {
-            return response()->json(['error' => 'TONTO'], 404);
+            return response()->json(['error' => 'Tarea no encontrada'], 404);
         } else {
             $task->delete();
+            return $this->create();
         }
-        return response()->json(['msj' => 'Tarea eliminada'], 200);
     }
     //FUNCIONES COMMENTS
     public function show_comments($id){
@@ -75,9 +67,10 @@ class ApiController extends Controller
             $comment->desc = $request->input('desc');
             $comment->task_id = $request->input('task_id');
             $comment->save();
-            return response()->json(['msj' => 'comentario guardado'], 200);
+            $request->session()->flash('alert-success', 'Comentario añadido');
+            return $this->create();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'CAGASTE'], 500);
+            return response()->json(['error' => 'Un error ocurrió'], 500);
         }
     }
     public function delete_comment($id){

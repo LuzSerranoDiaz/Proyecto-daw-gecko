@@ -9,21 +9,22 @@
 </div>
 </div>
 
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">
+  Añadir nueva tarea
+</button>
+
 <div class="main-content">
     @foreach ($tasks as $task)
-        <div class="element">
+        <div class="element" id="Task-{{ $task->id }}">
             <h3 class="task-title">{{ $task->title }}</h3>
             <span class="task-comment"> {{$task->desc}}</span>
-            <div class="tasks-btns"><button class="show-task-details" id="task-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#commentsModal">Show details</button></div>
+            <div class="tasks-btns">
+              <button class="show-task-details" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#commentsModal">Mostrar detalles</button>
+              <button class="delete-task" id="deleteTask-{{ $task->id }}">Eliminar</button>
+            </div>
         </div>
     @endforeach
 </div>
-
-
-
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
 
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -49,10 +50,6 @@
                 <button type="submit" id="submitTask">submit</button>
             </form>
         </div>
-        {{-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> --}}
       </div>
     </div>
   </div>
@@ -68,10 +65,6 @@
         <div class="modal-body">
 
         </div>
-        {{-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> --}}
       </div>
     </div>
   </div>
