@@ -14,6 +14,14 @@ class ApiController extends Controller
         $data['comments'] = comments::all();
         return view('front/main', $data);
     }
+
+    public function create_ajax($task_id=null){
+        $data['tasks'] = tasks::all();
+        $data['comments'] = comments::all();
+        $returnHtml = view('front/main', $data);
+        return response()->json(['task_id'=>$task_id, 'html'=>$returnHtml]);
+    }
+
     public function store_task(Request $request){
         try {
             $request->validate([
@@ -32,7 +40,7 @@ class ApiController extends Controller
             $task->position = $request->input('position');
             $task->save();
             $request->session()->flash('alert-success', 'Task was successful added!');
-            return $this->create();
+            return $this->create_ajax(DB::table('tasks')->latest('id')->first()->id);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage() ], 500);
         }
@@ -42,7 +50,7 @@ class ApiController extends Controller
         $task = tasks::find($id);
         if (!$task) {
             $request->session()->flash('alert-success', 'Un error ocurrió');
-        } else{
+        } else {
             try {
                 $request->validate([
                     'title' => 'required|string',
@@ -58,11 +66,12 @@ class ApiController extends Controller
                 $task->position = $request->input('position');
                 $task->update();
                 $request->session()->flash('alert-success', 'Task was successful edited');
-                return $this->create();
+                return $this->create_ajax($id);
             } catch (\Exception $e) {
                 return response()->json(['error' => $e->getMessage() ], 500);
             }
         } 
+        return $this->create();
     }
 
     public function delete_task($id){
@@ -76,11 +85,11 @@ class ApiController extends Controller
         }
     }
     //FUNCIONES COMMENTS
-    public function show_comments($id){
-        $data['comments'] = DB::table('comments')->where('task_id', $id)->get();
-        return view('front/main', $data);
-        // return $data;
-    }
+    // public function show_comments($id){
+    //     $data['comments'] = DB::table('comments')->where('tasks_id', $id)->get();
+    //     return view('front/main', $data);
+    //     // return $data;
+    // }
     // public function select_one_comment($id){
     //     $comment = comments::find($id);
     //     return $comment;
@@ -90,13 +99,13 @@ class ApiController extends Controller
             $request->validate([
                 'title' => 'required|string',
                 'desc' => 'required|string',
-                'task_id' => 'required|integer',
+                'tasks_id' => 'required|integer',
             ]);
 
             $comment = new comments();
             $comment->title = $request->input('title');
             $comment->desc = $request->input('desc');
-            $comment->task_id = $request->input('task_id');
+            $comment->tasks_id = $request->input('tasks_id');
             $comment->save();
             $request->session()->flash('alert-success', 'Comentario añadido');
             return $this->create();
