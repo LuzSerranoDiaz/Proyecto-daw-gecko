@@ -41,9 +41,17 @@
         
     </head>
     <body class="font-sans antialiased">
-        <div class="logo">
-            <img src="{{ asset('img/logo.png') }}" alt="logo"/>
-        </div>
+        <nav class="logo">
+            <label for="green">Verde</label>
+            <label for="yellow">Amarillo</label>
+            <label for="red">Rojo</label>
+            <label for="solved">Solucionados</label>
+            <input class="filter" id="green" checked type="checkbox">
+            <input class="filter" id="yellow" checked type="checkbox">
+            <input class="filter" id="red" checked type="checkbox">
+            <input class="filter" id="solved" checked type="checkbox">
+            <img src="{{ asset('img/logo.jpg') }}" alt="logo"/>
+        </nav>
         <div class="sticky-nav">
             <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#taskModal"></i>
         </div>

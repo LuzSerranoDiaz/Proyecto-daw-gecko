@@ -3,6 +3,7 @@ $('#submitTask').on('click', function(e){
     e.stopPropagation();
     let form = $(e.target).parent();
     let modal = $( "#taskModal" );
+    let elementColor;
     $.ajax({
         url:'api/store_task',
         type:'POST',
@@ -14,15 +15,14 @@ $('#submitTask').on('click', function(e){
             position: form.find('#position').val(),
         },
         beforeSend: function(){
-            // modal.attr('aria-hidden', 'true');
             $.loading().open();
         },
         success: function(response){
             $.loading().close();
             modal.modal('toggle');
-            $('.main-content').append('<div class="element-container"><div class="element" id="Task-'+response.task_id+'"><button class="delete-task" id="deleteTask-'+response.task_id+'" onclick="return confirm(\'¿Eliminar esta tarea?\')"><i class="fa-solid fa-square-xmark"></i></button><h3 class="task-title">'+form.find('#title').val()+'</h3><span class="task-comment">'+form.find('#desc').val()+'</span><div class="tasks-btns"><button class="show-task-details" id="taskDetails-'+response.task_id+'" data-bs-toggle="modal" data-bs-target="#commentsModal-'+response.task_id+'">Mostrar detalles</button><button class="edit-task" id="taskDetails-'+response.task_id+'" data-bs-toggle="modal" data-bs-target="#editModal-'+response.task_id+'">Editar</button></div></div></div>);')
+            $('.main-content').append('<div class="element-container"><div class="element" draggable="true" id="Task-'+response.task_id+'" data-position="{{ $task->position }}" aria-hidden="false"><div class="color-'+form.find('#color').val()+'"></div><button class="delete-task" id="deleteTask-'+response.task_id+'"><i class="fa-solid fa-square-xmark"></i></button><i class="fa-solid fa-x solve-task" id="task-'+response.task_id+'"></i><h3 class="task-title">'+form.find('#title').val()+'</h3><div class="task-comment-container"><span class="task-comment"> '+form.find('#desc').val()+'</span></div><div class="tasks-btns"><button class="show-task-details" id="taskDetails-'+response.task_id+'" data-bs-toggle="modal" data-bs-target="#commentsModal-'+response.task_id+'">Mostrar detalles</button><button class="edit-task" id="taskDetails-'+response.task_id+'" data-bs-toggle="modal" data-bs-target="#editModal-'+response.task_id+'">Editar</button></div></div></div>')
             $('.main-content').append('<div class="modal fade" id="commentsModal-'+response.task_id+'" tabindex="-1" aria-labelledby="commentsModal-'+response.task_id+'" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Comentarios</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"></div></div></div></div>')
-            // $('.main-content').append('<div class="modal fade" id="editModal-'+response.task_id+'" tabindex="-1" aria-labelledby="editModal-'+response.task_id+'" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modal title</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><form method="post">@csrf<label for="title">Titulo</label><input name ="title" id="title" type="text" value="'+form.find('#title').val()+'"><label for="desc">Descripcion</label><input name ="desc" id="desc" type="text" value="'+form.find('#desc').val()+'"><label for="color">Color</label><input name="color" id="color" type="number" value="'+form.find('#color').val()+'"><label for="solved">Solved</label><input name="solved" id="solved" type="number" value="'+form.find('#solved').val()+'"><label for="position">Position</label><input name="position" id="position" type="number" value="'+form.find('#position').val()+'"><button type="submit" class="submitTask" id="submitTask-'+response.task_id+'">submit</button></form></div></div></div></div>');
+            $('.main-content').append('<div class="modal fade" id="editModal-'+response.task_id+'" tabindex="-1" aria-labelledby="editModal-'+response.task_id+'" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Modal title</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><form method="post"><div class="form-group"><label for="title">Titulo</label><input class="form-control" name ="title" id="title" type="text" value="'+form.find('#title').val()+'"><label for="desc">Descripcion</label><input class="form-control" name ="desc" id="desc" type="text" value="'+form.find('#desc').val()+'"><label for="color">Color</label><select class="form-select" name="color" id="color"><option value="1">Rojo</option><option value="2">Amarillo</option><option value="3">Verde</option></select><button class="btn btn-primary submitTask" type="submit" id="submitTask-'+response.task_id+'">submit</button></div></form></div></div></div></div>');
         },
     });
 });
@@ -47,10 +47,17 @@ $('body').on('click', '.submitTask', function(e){
             $.loading().open();
         },
         success: function(){
+            switch (form.find('#color').val()){
+                case '1': elementColor ='background-color: red'; break;
+                case '2': elementColor = 'background-color: yellow';break;
+                case '3': elementColor = 'background-color: green';break;
+                default: elementColor = 'background-color: yellow';
+            }
             $.loading().close();
             modal.modal('toggle');
             $('#Task-'+id).find('.task-title').text(form.find('#title').val());
             $('#Task-'+id).find('.task-comment').text(form.find('#desc').val());
+            $('#Task-'+id).find('.color').attr('style', elementColor);
         },
     });
 });
@@ -131,3 +138,55 @@ function drop(event) {
     toContainer.appendChild(draggedElement);
   }
 }
+
+$('.filter').change(function() {
+    if(this.checked) {
+        switch (this.id){
+            case 'green': 
+                $('.color-3').parent().each(function(index, element){
+                        $(element).removeAttr('hidden');
+                });
+            break;
+            case 'yellow':
+                $('.color-2').parent().each(function(index, element){
+                        $(element).removeAttr('hidden');
+                });    
+            break;
+            case 'red':
+                $('.color-1').parent().each(function(index, element){
+                        $(element).removeAttr('hidden');
+                });
+            break;
+            case 'solved': 
+            $('.fa-check').parent().each(function(index, element){
+                $(element).removeAttr('hidden');
+                $(element).removeAttr('style');
+            });
+            break;
+        }
+    } else {
+        switch (this.id){
+            case 'green': 
+                $('.color-3').parent().each(function(index, element){
+                    $(element).attr('hidden', '');
+                });
+            break;
+            case 'yellow':
+                $('.color-2').parent().each(function(index, element){
+                    $(element).attr('hidden', '');
+                });    
+            break;
+            case 'red': 
+            $('.color-1').parent().each(function(index, element){
+                $(element).attr('hidden', '');
+            });
+            break;
+            case 'solved': 
+            $('.fa-check').parent().each(function(index, element){
+                $(element).attr('hidden', '');
+                $(element).attr('styles', 'visibility:collapse;');
+            });
+            break;
+        }
+    }
+})
