@@ -9,16 +9,26 @@
 </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">
-  Añadir nueva tarea
-</button>
-
 <div class="main-content">
     @foreach ($tasks as $task)
         <div class="element" id="Task-{{ $task->id }}">
-            <button class="delete-task" id="deleteTask-{{ $task->id }}" onclick="return confirm('¿Eliminar esta tarea?')"><i class="fa-solid fa-square-xmark"></i></button>
-            <h3 class="task-title">{{ $task->title }}</h3>
-            <span class="task-comment"> {{$task->desc}}</span>
+          <div class="header-element">
+              <?php switch($task->color): 
+              case '1': ?>
+                <div class="color red" style="background-color: red"></div>
+              <?php break; ?>
+              <?php case '2': ?>
+                <div class="color yellow" style="background-color: yellow"></div>
+              <?php break; ?>
+              <?php case '3': ?>
+                <div class="color green" style="background-color: green"></div>
+              <?php break; ?>
+              <?php endswitch; ?>
+              <button class="delete-task" id="deleteTask-{{ $task->id }}"><i class="fa-solid fa-square-xmark"></i></button>  
+           <h3 class="task-title">{{ $task->title }} </h3>
+          </div>
+
+            <span class="task-comment"> {{ $task->desc }}</span>
             <div class="tasks-btns">
               <button class="show-task-details" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#commentsModal-{{ $task->id }}">Mostrar detalles</button>
               <button class="edit-task" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#editModal-{{ $task->id }}">Editar</button>
@@ -41,7 +51,7 @@
                     <button class="deleteComment">x</button>
                   </div>
                   <div class="commentDesc">
-                    {{ $comment->desc }}
+                    <span class="commentDescDetail">{{ $comment->desc }}</span>
                   </div>
                 </div>
                 @endif
@@ -112,7 +122,4 @@
       </div>
     </div>
 </div>
-  
 
-
-  

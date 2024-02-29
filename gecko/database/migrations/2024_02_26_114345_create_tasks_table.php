@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('desc')->nullable();
             $table->integer('color')->nullable(); // 1-rojo 2-naranja 3-verde 
-            $table->boolean('solved')->nullable();
+            $table->boolean('solved')->nullable()->default('null');
             $table->integer('position')->nullable();// Posicion para ordenar las tareas
         });
     }
