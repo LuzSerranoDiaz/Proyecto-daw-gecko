@@ -13,17 +13,7 @@
     @foreach ($tasks as $task)
     <div class="element-container">
       <div class="element" draggable="true" id="Task-{{ $task->id }}" data-position="{{ $task->position }}" aria-hidden="false">
-        <?php switch($task->color): 
-              case '1': ?>
-                <div class="color-1"></div>
-              <?php break; ?>
-              <?php case '2': ?>
-                <div class="color-2"></div>
-              <?php break; ?>
-              <?php case '3': ?>
-                <div class="color-3"></div>
-              <?php break; ?>
-              <?php endswitch; ?>
+        <div class="color-{{ $task->color }}"></div>
         <button class="delete-task" id="deleteTask-{{ $task->id }}"><i class="fa-solid fa-square-xmark"></i></button>
         @if ($task->solved == 0)
           <i class="fa-solid fa-x solve-task" id="task-{{ $task->id }}"></i>

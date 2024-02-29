@@ -184,7 +184,7 @@ $('.filter').change(function() {
             case 'solved': 
             $('.fa-check').parent().each(function(index, element){
                 $(element).attr('hidden', '');
-                $(element).attr('styles', 'visibility:collapse;');
+                // $(element).attr('styles', 'visibility:collapse;'); Intente esto para que se quedara escondidas las tareas completadas mientras des-escondias otro tipo de tareas
             });
             break;
         }
