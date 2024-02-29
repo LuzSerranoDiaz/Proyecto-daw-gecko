@@ -41,6 +41,11 @@
         
     </head>
     <body class="font-sans antialiased">
-
+        <div class="logo">
+            <img src="{{ asset('img/logo.png') }}" alt="logo"/>
+        </div>
+        <div class="sticky-nav">
+            <i class="fa-solid fa-plus" data-bs-toggle="modal" data-bs-target="#taskModal"></i>
+        </div>
     </body>
 </html>

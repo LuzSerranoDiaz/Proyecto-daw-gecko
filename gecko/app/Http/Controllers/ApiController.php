@@ -8,16 +8,19 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
+    public const TASK_NOT_SOLVED = 0;
+    public const TASK_SOLVED = 1;
+    public const DEFAULT_POSITION = 1;
     // FUNCIONES TASK
     public function create() {
-        $data['tasks'] = tasks::all();
-        $data['comments'] = comments::all();
+        $data['tasks'] = tasks::all()->sortDesc();
+        $data['comments'] = comments::all()->sortDesc();
         return view('front/main', $data);
     }
 
     public function create_ajax($task_id=null){
-        $data['tasks'] = tasks::all();
-        $data['comments'] = comments::all();
+        $data['tasks'] = tasks::all()->sortDesc();
+        $data['comments'] = comments::all()->sortDesc();
         $returnHtml = view('front/main', $data);
         return response()->json(['task_id'=>$task_id, 'html'=>$returnHtml]);
     }
@@ -27,17 +30,15 @@ class ApiController extends Controller
             $request->validate([
                 'title' => 'required|string',
                 'desc' => 'required|string',
-                'color' => 'required|integer',
-                'solved' => 'required|boolean',
-                'position' => 'required|integer',
+                'color' => 'required|integer'
             ]);
 
             $task = new tasks();
             $task->title = $request->input('title');
             $task->desc = $request->input('desc');
             $task->color = $request->input('color');
-            $task->solved = $request->input('solved');
-            $task->position = $request->input('position');
+            $task->solved = self::TASK_NOT_SOLVED;
+            $task->position = self::DEFAULT_POSITION;
             $task->save();
             $request->session()->flash('alert-success', 'Task was successful added!');
             return $this->create_ajax(DB::table('tasks')->latest('id')->first()->id);
@@ -55,15 +56,11 @@ class ApiController extends Controller
                 $request->validate([
                     'title' => 'required|string',
                     'desc' => 'required|string',
-                    'color' => 'required|integer',
-                    'solved' => 'required|boolean',
-                    'position' => 'required|integer',
+                    'color' => 'required|integer'
                 ]);
                 $task->title = $request->input('title');
                 $task->desc = $request->input('desc');
                 $task->color = $request->input('color');
-                $task->solved = $request->input('solved');
-                $task->position = $request->input('position');
                 $task->update();
                 $request->session()->flash('alert-success', 'Task was successful edited');
                 return $this->create_ajax($id);
@@ -74,26 +71,29 @@ class ApiController extends Controller
         return $this->create();
     }
 
-    public function delete_task($id){
+    public function delete_task(Request $request, $id){
         $task = tasks::find($id);
         if (!$task) {
             $request->session()->flash('alert-danger', 'Un error ocurrió');
             // return response()->json(['error' => 'Tarea no encontrada'], 404);
         } else {
             $task->delete();
+            $request->session()->flash('alert-success', 'Se ha eliminado correctamente.');
             return $this->create();
         }
     }
-    //FUNCIONES COMMENTS
-    // public function show_comments($id){
-    //     $data['comments'] = DB::table('comments')->where('tasks_id', $id)->get();
-    //     return view('front/main', $data);
-    //     // return $data;
-    // }
-    // public function select_one_comment($id){
-    //     $comment = comments::find($id);
-    //     return $comment;
-    // }
+
+    public function solve_task(Request $request, $id){
+        $task = tasks::find($id);
+        if (!$task) {
+            $request->session()->flash('alert-danger', 'Un error ocurrió');
+        }
+        $task->solved = ($task->solved === self::TASK_NOT_SOLVED) ? self::TASK_SOLVED : self::TASK_NOT_SOLVED;
+        $task->save();
+        $request->session()->flash('alert-success', 'Se ha cambiado el estado correctamente.');
+        return $this->create();
+    }
+
     public function store_comment(Request $request){
         try {
             $request->validate([

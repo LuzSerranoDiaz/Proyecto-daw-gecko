@@ -11,9 +11,9 @@
 
 <div class="main-content">
     @foreach ($tasks as $task)
-        <div class="element" id="Task-{{ $task->id }}">
-          <div class="header-element">
-              <?php switch($task->color): 
+    <div class="element-container">
+      <div class="element" draggable="true" id="Task-{{ $task->id }}" data-position="{{ $task->position }}">
+        <?php switch($task->color): 
               case '1': ?>
                 <div class="color red" style="background-color: red"></div>
               <?php break; ?>
@@ -24,16 +24,22 @@
                 <div class="color green" style="background-color: green"></div>
               <?php break; ?>
               <?php endswitch; ?>
-              <button class="delete-task" id="deleteTask-{{ $task->id }}"><i class="fa-solid fa-square-xmark"></i></button>  
-           <h3 class="task-title">{{ $task->title }} </h3>
-          </div>
-
-            <span class="task-comment"> {{ $task->desc }}</span>
-            <div class="tasks-btns">
-              <button class="show-task-details" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#commentsModal-{{ $task->id }}">Mostrar detalles</button>
-              <button class="edit-task" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#editModal-{{ $task->id }}">Editar</button>
-            </div>
+        <button class="delete-task" id="deleteTask-{{ $task->id }}"><i class="fa-solid fa-square-xmark"></i></button>
+        @if ($task->solved == 1)
+          <i class="fa-solid fa-x solve-task" id="task-{{ $task->id }}"></i>
+        @else
+          <i class="fa-solid fa-check solve-task" id="task-{{ $task->id }}"></i>
+        @endif
+        <h3 class="task-title">{{ $task->title }}</h3>
+        <div class="task-comment-container">
+          <span class="task-comment"> {{$task->desc}}</span>
         </div>
+          <div class="tasks-btns">
+            <button class="show-task-details" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#commentsModal-{{ $task->id }}">Mostrar detalles</button>
+            <button class="edit-task" id="taskDetails-{{ $task->id }}" data-bs-toggle="modal" data-bs-target="#editModal-{{ $task->id }}">Editar</button>
+          </div>
+        </div>
+      </div>
       {{-- TENGO UNA IDEA MUY ESTUPIDA PERO PUEDE FUNCIONAR --}}
       <div class="modal fade" id="commentsModal-{{ $task->id }}" tabindex="-1" aria-labelledby="commentsModal-{{ $task->id }}" aria-hidden="true">
         <div class="modal-dialog">
@@ -71,20 +77,21 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="{{url('api/store_task')}}">
+                <form method="post">
                     @csrf
-                
-                    <label for="title">Titulo</label>
-                    <input name ="title" id="title" type="text" value="{{ $task->title }}">
-                    <label for="desc">Descripcion</label>
-                    <input name ="desc" id="desc" type="text" value="{{ $task->desc }}">
-                    <label for="color">Color</label>
-                    <input name="color" id="color" type="number" value="{{ $task->color }}">
-                    <label for="solved">Solved</label>
-                    <input name="solved" id="solved" type="number" value="{{ $task->solved }}">
-                    <label for="position">Position</label>
-                    <input name="position" id="position" type="number" value="{{ $task->position }}">
-                    <button type="submit" class="submitTask" id="submitTask-{{ $task->id }}">submit</button>
+                    <div class="form-group">
+                      <label for="title">Titulo</label>
+                      <input class="form-control" name ="title" id="title" type="text" value="{{ $task->title }}">
+                      <label for="desc">Descripcion</label>
+                      <input class="form-control" name ="desc" id="desc" type="text" value="{{ $task->desc }}">
+                      <label for="color">Color</label>
+                      <select class="form-select" name="color" id="color">
+                        <option value="1">Rojo</option>
+                        <option value="2">Amarillo</option>
+                        <option value="3">Verde</option>
+                      </select>
+                      <button class="btn btn-primary submitTask" type="submit" id="submitTask-{{ $task->id }}">submit</button>
+                    </div>
                 </form>
             </div>
           </div>
@@ -103,23 +110,27 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form method="post" action="{{url('api/store_task')}}">
+            <form method="post">
                 @csrf
-            
-                <label for="title">Titulo</label>
-                <input name ="title" id="title" type="text">
-                <label for="desc">Descripcion</label>
-                <input name ="desc" id="desc" type="text">
-                <label for="color">Color</label>
-                <input name="color" id="color" type="number">
-                <label for="solved">Solved</label>
-                <input name="solved" id="solved" type="number">
-                <label for="position">Position</label>
-                <input name="position" id="position" type="number">
-                <button type="submit" id="submitTask">submit</button>
+                <div class="form-group">
+                  <label for="title">Titulo</label>
+                  <input class="form-control" name ="title" id="title" type="text">
+                  <label for="desc">Descripcion</label>
+                  <input class="form-control" name ="desc" id="desc" type="text">
+                  <label for="color">Color</label>
+                  <select class="form-select" name="color" id="color">
+                    <option value="1">Rojo</option>
+                    <option selected value="2">Amarillo</option>
+                    <option value="3">Verde</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit" id="submitTask">submit</button>
+                </div>
             </form>
         </div>
       </div>
     </div>
 </div>
+  
 
+
+  

@@ -26,6 +26,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/store_task', [ApiController::class, 'store_task']);
     Route::put('/update_task/{id}', [ApiController::class, 'edit_task']);
     Route::delete('/delete_task/{id}', [ApiController::class, 'delete_task']);
+    Route::get('/solve_task/{id}', [ApiController::class, 'solve_task']);
     //rutas comment
     Route::get('/comments/{id}', [ApiController::class, 'show_comments']);
     Route::post('/store_comment', [ApiController::class, 'store_comment']);
