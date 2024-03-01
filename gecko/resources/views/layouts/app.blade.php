@@ -42,14 +42,16 @@
     </head>
     <body class="font-sans antialiased">
         <nav class="logo">
-            <label for="green">Verde</label>
-            <label for="yellow">Amarillo</label>
-            <label for="red">Rojo</label>
-            <label for="solved">Solucionados</label>
-            <input class="filter" id="green" checked type="checkbox">
-            <input class="filter" id="yellow" checked type="checkbox">
-            <input class="filter" id="red" checked type="checkbox">
-            <input class="filter" id="solved" checked type="checkbox">
+            <div class=filters>
+                <label class="green" for="green"></label>
+                <input class="filter" id="green" checked type="checkbox">
+                <label class="yellow" for="yellow"></label>
+                <input class="filter" id="yellow" checked type="checkbox">
+                <label class="red" for="red"></label>
+                <input class="filter" id="red" checked type="checkbox">
+                <label class="solved" for="solved">Solucionados</label>
+                <input class="filter" id="solved" checked type="checkbox">
+            </div>
             <img src="{{ asset('img/logo.jpg') }}" alt="logo"/>
         </nav>
         <div class="sticky-nav">

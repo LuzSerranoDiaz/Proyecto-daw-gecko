@@ -1,9 +1,45 @@
 body {
+
+  color: #0f220f;
+  background-color: #cfeec4;
+
   .logo {
     display: flex;
     justify-content: right;
     background-color: #10A510;
     height: 50px;
+    img{
+      flex-basis: 89px;
+    }
+    .filters{
+      flex-grow: 10;
+      display: flex;
+      align-items: center;
+      label{
+        border-radius: 5px;
+        margin: 0 5px 0 5px;
+        color: white;
+      }
+      .green{
+        background-color: green;
+        border: solid 3px #cfeec4;
+        padding: 6px;
+
+      }
+      .yellow{
+        background-color: yellow;
+        border: solid 3px #cfeec4;
+        padding: 6px;
+        /* margin: 0 5px 0 5px; */
+      }
+      .red{
+        background-color: red;
+        border: solid 3px #cfeec4;
+        padding: 6px;
+        /* margin: 0 5px 0 5px; */
+      }
+      
+    }
   }
 
   .sticky-nav {
@@ -12,7 +48,7 @@ body {
     right: 5px;
     padding: 10px;
     border-radius: 20px;
-    background-color: #aef2ae;
+    background-color: #bea; /*hehe*/
 
     i {
       font-size: 2.5em
@@ -27,7 +63,9 @@ body {
     .element-container {
       .element {
         margin: 5px 10px 15px;
-        box-shadow: 5px 8px #000000;
+        box-shadow: 5px 8px #0f220f;
+        background-color: #fff;
+        border: solid 0px #0f220f;
 
         .task-title {
           font-weight: bold;
@@ -95,7 +133,7 @@ body {
 
           button {
             appearance: none;
-            background-color: #000000;
+            background-color: #0f220f;
             transition: box-shadow .15s, transform .15s;
             ;
             color: #fff;
@@ -103,11 +141,13 @@ body {
             padding: 5px;
             text-align: center;
             margin: 0 5px 0 5px;
+            /* outline: 1px solid #0f220f; */
+            border: 1px solid #0f220f;
           }
 
 
           button:hover {
-            box-shadow: rgba(255, 255, 255, 0.4) 0 4px 8px, rgba(255, 255, 255, 0.3) 0 7px 13px -3px, #000000 0 -3px 0 inset;
+            box-shadow: rgba(255, 255, 255, 0.4) 0 4px 8px, rgba(255, 255, 255, 0.3) 0 7px 13px -3px, #0f220f 0 -3px 0 inset;
             transform: translateY(-2px);
           }
 
