@@ -18,11 +18,11 @@ class ApiController extends Controller
         return view('front/main', $data);
     }
 
-    public function create_ajax($task_id=null){
+    public function create_ajax($task_id=null, $comment_id=null){
         $data['tasks'] = tasks::all()->sortDesc();
         $data['comments'] = comments::all()->sortDesc();
         $returnHtml = view('front/main', $data);
-        return response()->json(['task_id'=>$task_id, 'html'=>$returnHtml]);
+        return response()->json(['task_id'=>$task_id, 'comment_id'=>$comment_id, 'html'=>$returnHtml]);
     }
 
     public function store_task(Request $request){
@@ -41,7 +41,7 @@ class ApiController extends Controller
             $task->position = self::DEFAULT_POSITION;
             $task->save();
             $request->session()->flash('alert-success', 'Task was successful added!');
-            return $this->create_ajax(DB::table('tasks')->latest('id')->first()->id);
+            return $this->create_ajax(DB::table('tasks')->latest('id')->first()->id, null);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage() ], 500);
         }
@@ -63,7 +63,7 @@ class ApiController extends Controller
                 $task->color = $request->input('color');
                 $task->update();
                 $request->session()->flash('alert-success', 'Task was successful edited');
-                return $this->create_ajax($id);
+                return $this->create_ajax($id, null);
             } catch (\Exception $e) {
                 return response()->json(['error' => $e->getMessage() ], 500);
             }
@@ -108,7 +108,7 @@ class ApiController extends Controller
             $comment->tasks_id = $request->input('tasks_id');
             $comment->save();
             $request->session()->flash('alert-success', 'Comentario añadido');
-            return $this->create();
+            return $this->create_ajax(null, DB::table('comments')->latest('id')->first()->id);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Un error ocurrió'], 500);
         }

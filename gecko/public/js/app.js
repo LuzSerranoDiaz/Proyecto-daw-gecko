@@ -190,3 +190,49 @@ $('.filter').change(function() {
         }
     }
 })
+
+$('body').on('click', '.addComment', function(e){
+    $(this).closest('.modal-body').find('form').removeAttr('hidden');
+})
+
+$('body').on('click', '.submitComment', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    let form = $(e.target).parent();
+    let id = $(this).attr('id').split('-')[1];
+    $.ajax({
+        url:'api/store_comment',
+        type:'POST',
+        data:{
+            title: form.find('#title').val(),
+            desc: form.find('#desc').val(),
+            tasks_id: id,
+        },
+        beforeSend: function(){
+            $.loading().open();
+        },
+        success: function(response){
+            $.loading().close();
+            form.parent().attr('hidden', '');
+            $('#commentsModal-'+id).find('.modal-body').prepend('<div class="commentBody" id="comment-'+response.comment_id+'"><div class="commentTitle">'+form.find('#title').val()+'<button class="deleteComment">x</button></div><div class="commentDesc"><span class="commentDescDetail">'+form.find('#title').val()+'</span></div></div>');
+        },
+    });
+})
+
+$('body').on('click', '.deleteComment', function(e){
+    if (confirm('Are you sure?') === true) {
+        let id=$(this).closest('.commentBody').attr('id').split('-')[1];
+        $.ajax({
+            url:'api/delete_comment/' + id,
+            type:'DELETE',
+            beforeSend: function(){
+                $.loading().open();
+            },
+            success: function(){
+                $.loading().close();
+                $("#comment-" + id).remove();
+            },
+        });
+    }
+})
+

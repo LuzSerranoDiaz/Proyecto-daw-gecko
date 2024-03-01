@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      {{-- TENGO UNA IDEA MUY ESTUPIDA PERO PUEDE FUNCIONAR --}}
+{{-- MODAL COMENTARIOS--}}
       <div class="modal fade" id="commentsModal-{{ $task->id }}" tabindex="-1" aria-labelledby="commentsModal-{{ $task->id }}" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -41,7 +41,7 @@
             <div class="modal-body">
               @foreach ($comments as $comment)
                 @if ($comment->tasks_id == $task->id)
-                <div class="commentBody">
+                <div class="commentBody" id="comment-{{ $comment->id }}">
                   <div class="commentTitle">
                     {{ $comment->title }}
                     <button class="deleteComment">x</button>
@@ -52,6 +52,17 @@
                 </div>
                 @endif
               @endforeach
+              <button class="btn btn-primary addComment" type="submit" id="addComment-{{ $task->id }}">Añadir comentario <i class="fa-solid fa-caret-down"></i></button>
+              <form hidden>
+                @csrf
+                <div class="form-group">
+                  <label for="title">Titulo</label>
+                  <input class="form-control" name ="title" id="title" type="text">
+                  <label for="desc">Descripcion</label>
+                  <input class="form-control" name ="desc" id="desc" type="text">
+                  <button class="btn btn-primary submitComment" type="submit" id="submitComment-{{ $task->id }}">submit</button>
+                </div>
+            </form>
             </div>
           </div>
         </div>
@@ -67,7 +78,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form>
                     @csrf
                     <div class="form-group">
                       <label for="title">Titulo</label>
