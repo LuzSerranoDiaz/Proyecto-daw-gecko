@@ -11,8 +11,8 @@
 
 <div class="main-content">
     @foreach ($tasks as $task)
-    <div class="element-container">
-      <div class="element" draggable="true" id="Task-{{ $task->id }}" data-position="{{ $task->position }}" aria-hidden="false">
+    <div class="element-container <?= $task->solved == 1 ? 'solved' : 'not-solved' ?>">
+      <div class="element" draggable="true" id="Task-{{ $task->id }}" aria-hidden="false">
         <div class="color-{{ $task->color }}"></div>
         <button class="delete-task" id="deleteTask-{{ $task->id }}"><i class="fa-solid fa-square-xmark"></i></button>
         @if ($task->solved == 0)
@@ -53,7 +53,7 @@
                 @endif
               @endforeach
               <button class="btn btn-primary addComment" type="submit" id="addComment-{{ $task->id }}">Añadir comentario <i class="fa-solid fa-caret-down"></i></button>
-              <form hidden>
+              <form class="hidden">
                 @csrf
                 <div class="form-group">
                   <label for="title">Titulo</label>

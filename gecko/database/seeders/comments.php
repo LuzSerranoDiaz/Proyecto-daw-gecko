@@ -16,19 +16,19 @@ class comments extends Seeder
     public function run()
     {
         DB::table('comments')->insert([
-            'title' => 'Bombardear olula',
-            'desc' => 'descripcion',
-            'tasks_id' => 4,
+            'title' => 'Comentario 1',
+            'desc' => 'Porfa apruebame',
+            'tasks_id' => 78,
         ]);
         DB::table('comments')->insert([
-            'title' => 'Bombardear olula',
-            'desc' => 'descripcion',
-            'tasks_id' => 4,
+            'title' => 'Comentario 2',
+            'desc' => 'Comentario 2',
+            'tasks_id' => 78,
         ]);
         DB::table('comments')->insert([
-            'title' => 'Bombardear olula',
-            'desc' => 'descripcion',
-            'tasks_id' => 4,
+            'title' => 'Comentario 3',
+            'desc' => 'Comentario 3',
+            'tasks_id' => 78,
         ]);
     }
 }

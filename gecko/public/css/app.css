@@ -1,8 +1,10 @@
 body {
-
   color: #0f220f;
   background-color: #cfeec4;
 
+  .hidden {
+    display: none!important;
+  }
   .logo {
     display: flex;
     justify-content: right;
@@ -12,9 +14,13 @@ body {
       flex-basis: 89px;
     }
     .filters{
+      padding-left: 40px;
       flex-grow: 10;
       display: flex;
       align-items: center;
+      .filter{
+        display: none;
+      }
       label{
         border-radius: 5px;
         margin: 0 5px 0 5px;
@@ -48,10 +54,11 @@ body {
     right: 5px;
     padding: 10px;
     border-radius: 20px;
-    background-color: #bea; /*hehe*/
+    background-color: #0f220f; /*hehe*/
 
     i {
-      font-size: 2.5em
+      font-size: 2.5em;
+      color: #bea; /*hehe*/
     }
   }
 
